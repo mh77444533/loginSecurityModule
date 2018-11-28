@@ -13,4 +13,12 @@ security:
     enabled: false
 
 server:
-  port: 8060
+  port: 8080
+
+
+
+
+com:
+  security:
+     browser:
+       loginPage: /demo.html
