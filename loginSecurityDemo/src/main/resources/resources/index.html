@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+	<meta charset="utf-8">
+    <title>登录页面</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+    <div class="main">
+    	<div class="mainin">
+            <div class="mainin1">
+                 <form name="user" action="/authentication/form" method="post">
+                    <ul>
+                        <li><span>用户名：</span><input name="username" type="text" id="loginName" placeholder="登录名" class="SearchKeyword"></li>
+                        <li><span>密码：</span><input type="password" name="password" id="possword" placeholder="密码" class="SearchKeyword2"></li>
+                        <li><span>图形验证码：</span><input type="text" name="imageCode" id="imageCode" />  <img src="/code/image"></li>
+                        <li> <input class="tijiao" type="submit" id="loginImage" value="登录"/></li>
+                    </ul>
+                 </form>
+           </div>
+
+           <div class="mainin1" style="float:right">
+               <form name="user" action="/authentication/mobile" method="post">
+                   <ul>
+                       <li><span>手机号:</span><input name="mobile" value="15301587096" class="SearchKeyword"></li>
+                       <li><span>手机号验证码：</span> <input type="text" name="smsCode"> &nbsp;&nbsp; <a id="sendSms">发送验证码</a></li>
+                       <li> <input class="tijiao" type="submit" id="loginSms" value="登录"/></li>
+                   </ul>
+               </form>
+           </div>
+       </div>
+   </div>
+</body>
+</html>
