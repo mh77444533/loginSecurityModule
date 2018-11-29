@@ -1,5 +1,7 @@
 package com.mao.security.browser.coreProperties.impl;
 
+import com.mao.security.browser.coreProperties.impl.impl.LoginType;
+
 public class BrowserProperties {
 
     private String  loginPage="/demo.html";

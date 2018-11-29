@@ -2,12 +2,11 @@ package com.mao.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mao.security.browser.coreProperties.SecurityProperties;
-import com.mao.security.browser.coreProperties.impl.LoginType;
+import com.mao.security.browser.coreProperties.impl.impl.LoginType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 

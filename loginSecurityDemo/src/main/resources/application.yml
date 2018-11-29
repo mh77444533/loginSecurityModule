@@ -8,6 +8,12 @@ spring:
   session:
     store-type: none
 
+  redis:
+    host: 36.152.17.61
+    port: 6379
+
+
+
 security:
   basic:
     enabled: false
@@ -22,4 +28,14 @@ mao:
   security:
      browser:
        loginPage: /index.html
-       loginType: REDIRECT
+       #loginType: REDIRECT
+       loginType: JSON
+
+
+     code:
+        image:
+          width: 67
+          height: 23
+          lenght: 4
+          expireIn: 60
+          url: /user/list,/user/info/*

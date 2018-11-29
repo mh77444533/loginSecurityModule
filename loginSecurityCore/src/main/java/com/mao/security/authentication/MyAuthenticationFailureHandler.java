@@ -2,13 +2,13 @@ package com.mao.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mao.security.browser.coreProperties.SecurityProperties;
-import com.mao.security.browser.coreProperties.impl.LoginType;
+import com.mao.security.browser.coreProperties.impl.impl.LoginType;
+import com.mao.security.browser.support.SimpleResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         }else {
             super.onAuthenticationFailure(request,response,exception);
         }
