@@ -18,7 +18,8 @@ server:
 
 
 
-com:
+mao:
   security:
      browser:
-       loginPage: /demo.html
+       loginPage: /index.html
+       loginType: REDIRECT

@@ -1,4 +1,4 @@
-package com.mao.security.browser.coreConfig;
+package com.mao.security.coreConfig;
 
 import com.mao.security.browser.coreProperties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableConfigurationProperties(SecurityProperties.class)
 public class CommonBeanConfig {
 
     /**
