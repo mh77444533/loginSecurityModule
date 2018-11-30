@@ -1,4 +1,4 @@
-package com.mao.security.browser.browserValidate;
+package com.mao.security.browser.browserValidate.validateCommon;
 
 import org.springframework.security.core.AuthenticationException;
 

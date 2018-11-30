@@ -23,11 +23,21 @@
            <div class="mainin1" style="float:right">
                <form name="user" action="/authentication/mobile" method="post">
                    <ul>
-                       <li><span>手机号:</span><input name="mobile" value="15301587096" class="SearchKeyword"></li>
-                       <li><span>手机号验证码：</span> <input type="text" name="smsCode"> &nbsp;&nbsp; <a id="sendSms">发送验证码</a></li>
+                       <li><span>手机号:</span><input name="mobile" id="mobile" value="15301587096" class="SearchKeyword"></li>
+                       <li><span>短信验证码：</span> <input type="text" name="smsCode"> &nbsp;&nbsp; <a id="sendSms">发送验证码</a></li>
                        <li> <input class="tijiao" type="submit" id="loginSms" value="登录"/></li>
                    </ul>
                </form>
+               <script>
+                   $(function(){
+                       $("#sendSms").click(function(){
+                           var mobile = $("#mobile").val();
+                           $.get("/code/sms?mobile="+mobile, function(result){
+                           });
+                       });
+                   });
+
+               </script>
            </div>
        </div>
    </div>

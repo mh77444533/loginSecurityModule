@@ -1,7 +1,9 @@
 package com.mao.security.browser.coreConfig;
 
-import com.mao.security.browser.browserValidate.imageInterface.ValidateCodeGenerator;
-import com.mao.security.browser.browserValidate.imageInterface.impl.ImageCodeGenerator;
+import com.mao.security.browser.browserValidate.codeInterface.ValidateCodeGenerator;
+import com.mao.security.browser.browserValidate.codeInterface.impl.ImageCodeGenerator;
+import com.mao.security.browser.browserValidate.validateCommon.smsCode.SmsCodeSender;
+import com.mao.security.browser.browserValidate.validateCommon.smsCode.impl.SmsCodeSenderImpl;
 import com.mao.security.browser.coreProperties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,6 +32,13 @@ public class BrowserConfig {
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
     }
+
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender smsCodeSender(){
+        return new SmsCodeSenderImpl();
+    }
+
 
 
 }

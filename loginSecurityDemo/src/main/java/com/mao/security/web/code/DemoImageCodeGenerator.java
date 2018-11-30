@@ -1,7 +1,7 @@
 package com.mao.security.web.code;
 
-import com.mao.security.browser.browserValidate.ImageCode;
-import com.mao.security.browser.browserValidate.imageInterface.ValidateCodeGenerator;
+import com.mao.security.browser.browserValidate.validateCommon.codeImpl.ImageCode;
+import com.mao.security.browser.browserValidate.codeInterface.ValidateCodeGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 

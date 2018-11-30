@@ -1,9 +1,8 @@
-package com.mao.security.browser.browserValidate.imageInterface.impl;
+package com.mao.security.browser.browserValidate.codeInterface.impl;
 
-import com.mao.security.browser.browserValidate.ImageCode;
-import com.mao.security.browser.browserValidate.imageInterface.ValidateCodeGenerator;
+import com.mao.security.browser.browserValidate.validateCommon.codeImpl.ImageCode;
+import com.mao.security.browser.browserValidate.codeInterface.ValidateCodeGenerator;
 import com.mao.security.browser.coreProperties.SecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.awt.*;

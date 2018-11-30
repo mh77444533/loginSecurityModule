@@ -1,12 +1,13 @@
-package com.mao.security.browser.browserValidate;
+package com.mao.security.browser.browserValidate.ValidateFilter;
 
+import com.mao.security.browser.browserValidate.validateCommon.ValideteCodeException;
+import com.mao.security.browser.browserValidate.validateCommon.codeImpl.ImageCode;
 import com.mao.security.browser.controller.ValidateCodeController;
 import com.mao.security.browser.coreProperties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -50,6 +51,7 @@ public class ImageValidateCodeFilter extends OncePerRequestFilter implements Ini
             urls.add(configUrl);
         }
         urls.add("/authentication/form");
+        urls.add("/authentication/mobile");
     }
 
 
