@@ -6,7 +6,8 @@ spring:
     password: 123456
 
   session:
-    store-type: none
+    store-type: REDIS
+    #store-type: REDIS
 
   redis:
     host: 36.152.17.61
@@ -20,6 +21,8 @@ security:
 
 server:
   port: 8080
+  session:
+    timeout: 1800
 
 
 

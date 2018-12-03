@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,6 @@ import java.io.IOException;
  * 登录成功后，处理类
  */
 @Component
-//public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -35,7 +35,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        logger.info("MyAuthenticationSuccessHandler......登录成功。。。。");
+        logger.info("MyAuthenticationSuccessHandler.......  onAuthenticationSuccess .... ");
 
         if(LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())){
             response.setContentType("application/json;charset=UTF-8");

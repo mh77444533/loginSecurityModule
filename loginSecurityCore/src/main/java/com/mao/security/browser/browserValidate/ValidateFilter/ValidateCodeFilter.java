@@ -94,10 +94,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     }
 
 
-
-
-
-
     /**
      * 获取校验码的类型，如果当前请求不需要校验，则返回null
      */

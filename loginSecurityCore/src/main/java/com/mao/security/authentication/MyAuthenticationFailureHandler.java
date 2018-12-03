@@ -21,7 +21,6 @@ import java.io.IOException;
  * Created by Administrator on 2018/11/29/029.
  */
 @Component("myAuthenticationFailureHandler")
-//public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler{
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler{
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -35,7 +34,8 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        logger.info("MyAuthenticationFailureHandler......登录失败。。。。");
+
+        logger.info("MyAuthenticationFailureHandler.......  onAuthenticationFailure .... ");
 
         if(LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())){
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

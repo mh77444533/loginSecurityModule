@@ -32,6 +32,8 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
+        System.out.println("SmsCodeAuthenticationSecurityConfig ===   :  configure");
+
         SmsCodeAuthticationFilter smsCodeAuthticationFilter = new  SmsCodeAuthticationFilter();
         smsCodeAuthticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         smsCodeAuthticationFilter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);

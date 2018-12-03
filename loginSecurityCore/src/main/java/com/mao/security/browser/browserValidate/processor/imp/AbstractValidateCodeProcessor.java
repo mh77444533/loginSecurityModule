@@ -1,13 +1,17 @@
 package com.mao.security.browser.browserValidate.processor.imp;
 
+import com.mao.security.browser.browserValidate.processor.ValidateCodeRepository;
 import com.mao.security.browser.browserValidate.validateCommon.ValidateCode;
 import com.mao.security.browser.browserValidate.codeInterface.ValidateCodeGenerator;
 import com.mao.security.browser.browserValidate.processor.ValidateCodeProcessor;
 import com.mao.security.browser.browserValidate.validateCommon.ValidateCodeType;
+import com.mao.security.browser.browserValidate.validateCommon.ValideteCodeException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Map;
@@ -24,6 +28,9 @@ public abstract class AbstractValidateCodeProcessor <T extends ValidateCode> imp
      */
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
+
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
 
     @Override
     public void create(ServletWebRequest request) throws Exception {
@@ -44,8 +51,10 @@ public abstract class AbstractValidateCodeProcessor <T extends ValidateCode> imp
      * 保存校验码
      */
     private void save(ServletWebRequest request, T validateCode) {
-       String key = SESSION_KEY_PREFIX+getProcessorType(request).toUpperCase();
-        sessionStrategy.setAttribute(request,key,validateCode);
+//       String key = SESSION_KEY_PREFIX+getProcessorType(request).toUpperCase();
+//        sessionStrategy.setAttribute(request,key,validateCode);
+        ValidateCode code = new ValidateCode(validateCode.getCode(),validateCode.getExpireTime());
+        validateCodeRepository.save(request,code,getValidateCodeType(request));
     }
 
     /**
@@ -77,33 +86,32 @@ public abstract class AbstractValidateCodeProcessor <T extends ValidateCode> imp
     @Override
     public void validate(ServletWebRequest request) {
 
-         ValidateCodeType codeType = getValidateCodeType(request);
+        ValidateCodeType codeType = getValidateCodeType(request);
 
-       //   T codeInSession = (T) validateCodeRepository.get(request, codeType);
+        T codeInSession = (T) validateCodeRepository.get(request, codeType);
 
-//        String codeInRequest;
-//        try {
-//
-//             codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),codeType.getParamNameOnValidate());
-//        } catch (ServletRequestBindingException e) {
-//            throw new ValidateCodeException("获取验证码的值失败");
-//        }
-//        if (StringUtils.isBlank(codeInRequest)) {
-//            throw new ValidateCodeException(codeType + "验证码的值不能为空");
-//        }
-//
-//        if (codeInSession == null) {
-//            throw new ValidateCodeException(codeType + "验证码不存在");
-//        }
-//
-//        if (codeInSession.isExpried()) {
-//            validateCodeRepository.remove(request,codeType);
-//            throw new ValidateCodeException(codeType + "验证码已过期");
-//        }
-//        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
-//            throw new ValidateCodeException(codeType + "验证码不匹配");
-//        }
-//        validateCodeRepository.remove(request,codeType);
+        String codeInRequest;
+        try {
+             codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),codeType.getParamNameOnValidate());
+        } catch (ServletRequestBindingException e) {
+            throw new ValideteCodeException("获取验证码的值失败");
+        }
+        if (StringUtils.isBlank(codeInRequest)) {
+            throw new ValideteCodeException(codeType + "验证码的值不能为空");
+        }
+
+        if (codeInSession == null) {
+            throw new ValideteCodeException(codeType + "验证码不存在");
+        }
+
+        if (codeInSession.isExpried()) {
+            validateCodeRepository.remove(request,codeType);
+            throw new ValideteCodeException(codeType + "验证码已过期");
+        }
+        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+            throw new ValideteCodeException(codeType + "验证码不匹配");
+        }
+        validateCodeRepository.remove(request,codeType);
     }
 
 }
