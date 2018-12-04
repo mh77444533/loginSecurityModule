@@ -12,6 +12,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.mao.security.browser.browserValidate.validateCommon.ValidateCodeType.SMS;
+
 /**
  * 集群时  使用redis保存session
  */
@@ -25,9 +27,14 @@ public class RedisSessionValidateCodeRepository implements ValidateCodeRepositor
      */
     @Override
     public void save(ServletWebRequest request, ValidateCode code, ValidateCodeType validateCodeType) {
-        String sessionKey =  getSessionKey(request,validateCodeType);
+//        String sessionKey =  getSessionKey(request,validateCodeType);
+//        redisTemplate.opsForValue().set(sessionKey, code, 30, TimeUnit.MINUTES);
+
+        String parameterName=ValidateCodeType.IMAGE.getParamNameCode();
+
+        String sessionKey =  buildKey(request, validateCodeType);
+
         redisTemplate.opsForValue().set(sessionKey, code, 30, TimeUnit.MINUTES);
-//        redisTemplate.opsForValue().set(buildKey(request, validateCodeType), code, 30, TimeUnit.MINUTES);
     }
 
     /**
@@ -37,12 +44,12 @@ public class RedisSessionValidateCodeRepository implements ValidateCodeRepositor
     public ValidateCode get(ServletWebRequest request, ValidateCodeType validateCodeType) {
         String sessionKey =  getSessionKey(request,validateCodeType);
 
-//        Object value = redisTemplate.opsForValue().get(buildKey(request, validateCodeType));
-        ValidateCode value =(ValidateCode) redisTemplate.opsForValue().get(sessionKey);
+        Object value = redisTemplate.opsForValue().get(buildKey(request, validateCodeType));
+//        Object value = redisTemplate.opsForValue().get(sessionKey);
         if (value == null) {
             return null;
         }
-        return value;
+        return (ValidateCode)value;
     }
 
     /**
@@ -50,9 +57,9 @@ public class RedisSessionValidateCodeRepository implements ValidateCodeRepositor
      */
     @Override
     public void remove(ServletWebRequest request, ValidateCodeType validateCodeType) {
-        String sessionKey =  getSessionKey(request,validateCodeType);
-        redisTemplate.delete(sessionKey);
-//        redisTemplate.delete(buildKey(request, validateCodeType));
+//        String sessionKey =  getSessionKey(request,validateCodeType);
+//        redisTemplate.delete(sessionKey);
+        redisTemplate.delete(buildKey(request, validateCodeType));
     }
 
 
@@ -65,11 +72,23 @@ public class RedisSessionValidateCodeRepository implements ValidateCodeRepositor
      * @return
      */
     private String buildKey(ServletWebRequest request, ValidateCodeType type) {
-        String deviceId = request.getHeader("deviceId");
+        String parameterName ="";
+        String deviceId ="";
+        if(ValidateCodeType.SMS.equals(type)){
+            deviceId = getParameter(request,ValidateCodeType.SMS.getParamNameCode());
+        }else if(ValidateCodeType.IMAGE.equals(type)){
+           // parameterName=ValidateCodeType.IMAGE.getParamNameCode();
+            deviceId =  request.getSessionId();
+            return  getSessionKey(request,type);
+        }
         if (StringUtils.isBlank(deviceId)) {
             throw new ValideteCodeException("请在请求头中携带deviceId参数");
         }
         return "code:" + type.toString().toLowerCase() + ":" + deviceId;
+    }
+
+    private String getParameter(ServletWebRequest request, String name){
+        return request.getParameter(name);
     }
 
     /**

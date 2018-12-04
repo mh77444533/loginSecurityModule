@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 /**
  * Created by Administrator on 2018/11/28/028.
  */
-@Configuration
+//@Configuration
 public class BroserSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
