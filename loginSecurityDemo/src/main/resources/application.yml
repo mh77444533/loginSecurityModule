@@ -39,6 +39,9 @@ mao:
        loginPage: /index.html
        #loginType: REDIRECT
        loginType: JSON
+     oauth2:
+       storeType: jwt
+
 
 
      code:

@@ -70,6 +70,12 @@
             <artifactId>spring-session</artifactId>
         </dependency>
 
+        <!-- 解析jwt 生成token的jar -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
+        </dependency>
 
 
     </dependencies>

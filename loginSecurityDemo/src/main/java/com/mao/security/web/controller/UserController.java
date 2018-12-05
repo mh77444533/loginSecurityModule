@@ -1,16 +1,18 @@
 package com.mao.security.web.controller;
 
 import com.mao.security.web.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,24 @@ public class UserController {
         return user;
     }
 
+    @GetMapping("/jwt")
+    public Object getCurrentUserJwt(Authentication user, HttpServletRequest request) throws UnsupportedEncodingException {
+        String token = request.getParameter("access_token");
+
+        JwtParser jwtParser = Jwts.parser().setSigningKey(("xushihui").getBytes("UTF-8")); //这里是签名的秘钥
+
+        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+
+        String company = (String)claims.get("company");
+
+        return claims;
+    }
+
+
+    @PostMapping("/listPost")
+    public List<User> getInfoPost (){
+        return getUserList();
+    }
 
     @GetMapping("/list")
     public List<User> getInfolist (){

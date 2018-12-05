@@ -88,8 +88,6 @@ public class TokenAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 
     }
 
-
-
     private String[] extractAndDecodeHeader(String header, HttpServletRequest request) throws IOException {
         byte[] base64Token = header.substring(6).getBytes("UTF-8");
 

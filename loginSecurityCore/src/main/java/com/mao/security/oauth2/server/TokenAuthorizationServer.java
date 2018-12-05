@@ -11,9 +11,14 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 认证服务器
@@ -35,6 +40,19 @@ public class TokenAuthorizationServer extends AuthorizationServerConfigurerAdapt
     @Autowired
     private TokenStore tokenStore;
 
+    @Autowired(required = false)  //因为只有jwt才能生效  如果这里不一定有
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+    @Autowired(required = false)
+    private TokenEnhancer jwtTokenEnhancer;
+
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        logger.info("TokenAuthorizationServer  --->   security");
+        super.configure(security);
+    }
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         logger.info("TokenAuthorizationServer  --->   endpoints");
@@ -42,6 +60,20 @@ public class TokenAuthorizationServer extends AuthorizationServerConfigurerAdapt
                 .tokenStore(tokenStore)   //配置redis的TokenStore
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
+
+        if(jwtAccessTokenConverter != null && jwtTokenEnhancer!= null){
+            TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+            List<TokenEnhancer> enhancerList = new ArrayList<>();
+            enhancerList.add(jwtTokenEnhancer);   //增加信息的
+            enhancerList.add(jwtAccessTokenConverter); //加密签名
+            enhancerChain.setTokenEnhancers(enhancerList);
+
+            endpoints
+                    .tokenEnhancer(enhancerChain)
+                    .accessTokenConverter(jwtAccessTokenConverter);
+        }
+
+
     }
 
     @Override
